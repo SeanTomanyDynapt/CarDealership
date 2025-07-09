@@ -1,89 +1,163 @@
-# Premium Auto Dealership Website
+# Car Dealership Management System
 
-A Python Flask web application for a car dealership specializing in Ford, Lincoln, and Jeep vehicles (model years 1990-present).
+A comprehensive Flask-based car dealership management system with CRUD operations, Excel integration, and Vapi voice assistant capabilities.
 
 ## Features
 
-- **Home Page**: Business information, hours, and contact details
-- **Brand Pages**: Dedicated pages for Ford, Lincoln, and Jeep models
-- **Model Details**: Individual pages for each vehicle model with specifications
-- **Services & Parts**: Service center information and parts catalog
-- **Responsive Design**: Mobile-friendly Bootstrap interface
+- **Public Website**: Complete vehicle inventory display with search functionality
+- **Admin Panel**: Full CRUD operations for vehicles, parts, and services (admin/password)
+- **Voice Assistant**: Vapi integration with 4 configured functions
+- **Excel Integration**: 5 organized sheets for easy client editing
+- **API Endpoints**: RESTful API for voice assistant integration
+- **Modern UI**: Bootstrap-based responsive design
 
-## Project Structure
+## Quick Start
 
-```
-CarDealership/
-├── app/
-│   ├── main.py              # Flask application entry point
-│   └── templates/           # HTML templates
-│       ├── base.html        # Base template
-│       ├── home.html        # Homepage
-│       ├── make.html        # Brand listing page
-│       ├── model.html       # Individual model page
-│       └── services.html    # Services and parts page
-├── static/
-│   ├── css/
-│   │   └── style.css        # Custom styling
-│   └── images/              # Vehicle images (placeholder)
-├── data/
-│   ├── inventory.json       # Vehicle model data
-│   └── parts_catalog.json   # Parts and services data
-├── requirements.txt         # Python dependencies
-└── README.md               # This file
-```
+### Local Development
 
-## Setup Instructions
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/SeanTomanyDynapt/CarDealership.git
+   cd CarDealership
+   ```
 
-1. **Install Dependencies**
+2. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
 
-2. **Run the Application**
+3. **Run the application:**
    ```bash
-   cd app
-   python main.py
+   python app/main.py
    ```
 
-3. **Access the Website**
-   - Open your browser and go to `http://localhost:5000`
+4. **Access the application:**
+   - Website: http://localhost:5001
+   - Admin Panel: http://localhost:5001/admin/login (admin/password)
+   - API: http://localhost:5001/api/inventory
 
-## Development Commands
+### Railway Deployment
 
-- **Run the application**: `python app/main.py`
-- **Check syntax**: `python -m py_compile app/main.py`
-- **Interactive debugging**: `python -i app/main.py`
+This application is configured for easy deployment on Railway:
 
-## Data Structure
+1. **Fork or clone this repository**
 
-### Inventory Data
-- Located in `data/inventory.json`
-- Contains Ford, Lincoln, and Jeep models from 1990-present
-- Includes model descriptions, categories, features, and available years
+2. **Deploy on Railway:**
+   - Go to [Railway.app](https://railway.app)
+   - Click "New Project"
+   - Select "Deploy from GitHub repo"
+   - Choose your repository: `SeanTomanyDynapt/CarDealership`
+   - Railway will automatically detect the configuration
 
-### Parts Catalog
-- Located in `data/parts_catalog.json`
-- Organized by brand and model
-- Categories include Engine, Transmission, Brakes, Suspension, and Electrical
-- Also includes service offerings
+3. **Configuration files included:**
+   - `Procfile`: Tells Railway how to run the application
+   - `railway.json`: Railway-specific deployment settings
+   - `requirements.txt`: Python dependencies
 
-## Technologies Used
+4. **Environment variables:**
+   - Railway automatically provides `PORT` environment variable
+   - No additional configuration needed
 
-- **Backend**: Python Flask
-- **Frontend**: HTML5, CSS3, Bootstrap 5
-- **Data Storage**: JSON files
-- **Responsive Design**: Bootstrap grid system
+5. **Deployment process:**
+   - Railway will build and deploy automatically
+   - The application will be available at your Railway-provided URL
 
-## Future Enhancements
+### Manual Railway Setup
 
-- Database integration
-- User authentication
-- Online parts ordering
-- Service appointment scheduling
-- Vehicle inventory management
-- Voice agent integration
+If you prefer manual setup:
 
-## Contact
+1. Create a new Railway project
+2. Connect your GitHub repository
+3. Set the start command: `python app/main.py`
+4. Deploy!
 
-For questions or support, contact the development team or refer to the business contact information on the website.
+## Application Structure
+
+```
+CarDealership/
+├── app/
+│   ├── main.py              # Main Flask application
+│   └── templates/           # HTML templates
+├── data/
+│   ├── inventory.json       # Vehicle inventory data
+│   └── parts_catalog.json   # Parts catalog data
+├── static/
+│   └── css/
+│       └── style.css        # Custom styling
+├── inventory.xlsx           # Excel file with 5 sheets
+├── inventory_manager.py     # Excel/JSON data management
+├── requirements.txt         # Python dependencies
+├── Procfile                 # Railway deployment config
+└── railway.json             # Railway settings
+```
+
+## API Endpoints
+
+The application provides RESTful API endpoints for voice assistant integration:
+
+- `GET /api/inventory` - Get all vehicle inventory
+- `GET /api/inventory/<make>` - Get vehicles by make
+- `GET /api/inventory/<make>/<model>` - Get specific model details
+- `GET /api/search?q=<query>` - Search vehicles
+- `GET /api/parts` - Get all parts catalog
+- `GET /api/parts/<make>` - Get parts by make
+- `GET /api/parts/<make>/<model>` - Get parts by model
+- `GET /api/business-info` - Get business information
+
+## Vapi Voice Assistant
+
+The application includes 4 configured Vapi functions:
+
+1. **Check Vehicle Availability** - Search inventory by make/model/year
+2. **Get Vehicle Details** - Retrieve detailed vehicle information
+3. **Search Parts** - Find available parts for specific vehicles
+4. **Get Business Info** - Provide contact and business information
+
+## Excel Integration
+
+The system uses a 5-sheet Excel file for easy client editing:
+
+- **Ford_Vehicles** - Ford vehicle inventory
+- **Lincoln_Vehicles** - Lincoln vehicle inventory  
+- **Jeep_Vehicles** - Jeep vehicle inventory
+- **Parts** - Parts catalog
+- **Services** - Service offerings
+
+## Admin Panel
+
+Access the admin panel at `/admin/login` with credentials:
+- **Username**: admin
+- **Password**: password
+
+Features:
+- Vehicle management (add/edit/delete)
+- Parts catalog management
+- Excel import/export
+- Real-time inventory updates
+- Professional dashboard
+
+## Data Management
+
+The system automatically syncs between Excel and JSON formats:
+- **Excel → JSON**: Import Excel data into the web application
+- **JSON → Excel**: Export web data back to Excel format
+- **Real-time updates**: Changes reflect immediately in the web interface
+
+## Production Deployment
+
+For production deployment:
+1. Change admin credentials in `app/main.py`
+2. Set `debug=False` (already configured)
+3. Use environment variables for sensitive data
+4. Configure proper SSL/HTTPS
+
+## Support
+
+For support and questions:
+- Create an issue in the GitHub repository
+- Check the documentation in the `/docs` folder
+- Review the API endpoints for integration
+
+## License
+
+This project is licensed under the MIT License.
