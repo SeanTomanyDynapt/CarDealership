@@ -171,6 +171,176 @@ def api_business_info():
         ]
     })
 
+# Vapi webhook endpoints
+@app.route('/webhook/check-vehicle', methods=['POST'])
+def webhook_check_vehicle():
+    """Webhook for Vapi to check vehicle availability"""
+    try:
+        data = request.get_json()
+        
+        # Extract parameters from Vapi function call
+        make = data.get('make')
+        model = data.get('model')
+        
+        if not make or not model:
+            return jsonify({
+                "error": "Both 'make' and 'model' parameters are required"
+            }), 400
+        
+        # Get vehicle data from inventory
+        model_data = inventory.get(make, {}).get(model, {})
+        
+        if not model_data:
+            return jsonify({
+                "message": f"I don't currently have any {make} {model} vehicles in our inventory.",
+                "available": False,
+                "make": make,
+                "model": model
+            })
+        
+        # Get available years
+        years = model_data.get('years', [])
+        description = model_data.get('description', f"{make} {model}")
+        
+        # Format response for Vapi
+        response = {
+            "message": f"Yes, we have {make} {model} vehicles available! {description}",
+            "available": True,
+            "make": make,
+            "model": model,
+            "years": years,
+            "year_range": f"{min(years)}-{max(years)}" if years else "N/A",
+            "description": description
+        }
+        
+        return jsonify(response)
+        
+    except Exception as e:
+        return jsonify({
+            "error": f"Error processing request: {str(e)}",
+            "message": "Sorry, I encountered an error while checking vehicle availability."
+        }), 500
+
+@app.route('/webhook/business-info', methods=['POST'])
+def webhook_business_info():
+    """Webhook for Vapi to get business information"""
+    try:
+        business_info = {
+            "name": "Premium Auto Dealership",
+            "phone": "(555) 123-4567",
+            "email": "info@premiumauto.com",
+            "address": "123 Auto Lane, Car City, CC 12345",
+            "hours": {
+                "monday_friday": "8:00 AM - 7:00 PM",
+                "saturday": "9:00 AM - 6:00 PM",
+                "sunday": "12:00 PM - 5:00 PM"
+            },
+            "brands": ["Ford", "Lincoln", "Jeep"],
+            "services": [
+                "New & Used Vehicle Sales",
+                "Professional Service Center",
+                "Genuine Parts & Accessories",
+                "Financing Options Available"
+            ]
+        }
+        
+        # Format response for Vapi
+        response = {
+            "message": f"We're {business_info['name']} located at {business_info['address']}. You can reach us at {business_info['phone']}. Our hours are Monday-Friday {business_info['hours']['monday_friday']}, Saturday {business_info['hours']['saturday']}, and Sunday {business_info['hours']['sunday']}. We sell {', '.join(business_info['brands'])} vehicles and offer {', '.join(business_info['services'])}.",
+            "data": business_info
+        }
+        
+        return jsonify(response)
+        
+    except Exception as e:
+        return jsonify({
+            "error": f"Error processing request: {str(e)}",
+            "message": "Sorry, I encountered an error while getting business information."
+        }), 500
+
+@app.route('/webhook/search-vehicles', methods=['POST'])
+def webhook_search_vehicles():
+    """Webhook for Vapi to search vehicles"""
+    try:
+        data = request.get_json()
+        query = data.get('query', '').lower()
+        
+        if not query:
+            return jsonify({
+                "error": "Search query is required",
+                "message": "Please provide a search term."
+            }), 400
+        
+        results = []
+        for make, models in inventory.items():
+            for model, model_data in models.items():
+                # Search in model name, description, category, and features
+                searchable_text = f"{make} {model} {model_data.get('description', '')} {model_data.get('category', '')} {' '.join(model_data.get('features', []))}".lower()
+                
+                if query in searchable_text:
+                    results.append({
+                        "make": make,
+                        "model": model,
+                        "description": model_data.get('description', ''),
+                        "years": model_data.get('years', [])
+                    })
+        
+        if results:
+            vehicle_list = ", ".join([f"{r['make']} {r['model']}" for r in results])
+            response = {
+                "message": f"I found {len(results)} vehicles matching '{query}': {vehicle_list}",
+                "results": results,
+                "count": len(results)
+            }
+        else:
+            response = {
+                "message": f"I couldn't find any vehicles matching '{query}'. We have Ford, Lincoln, and Jeep vehicles available.",
+                "results": [],
+                "count": 0
+            }
+        
+        return jsonify(response)
+        
+    except Exception as e:
+        return jsonify({
+            "error": f"Error processing request: {str(e)}",
+            "message": "Sorry, I encountered an error while searching vehicles."
+        }), 500
+
+@app.route('/webhook/get-inventory', methods=['POST'])
+def webhook_get_inventory():
+    """Webhook for Vapi to get all inventory"""
+    try:
+        makes = []
+        total_models = 0
+        
+        for make, models in inventory.items():
+            model_list = list(models.keys())
+            makes.append({
+                "make": make,
+                "models": model_list,
+                "count": len(model_list)
+            })
+            total_models += len(model_list)
+        
+        make_names = [make['make'] for make in makes]
+        
+        response = {
+            "message": f"We carry {len(makes)} brands: {', '.join(make_names)} with a total of {total_models} different models. We have vehicles from model years 1990 to 2025.",
+            "makes": makes,
+            "total_makes": len(makes),
+            "total_models": total_models,
+            "brands": make_names
+        }
+        
+        return jsonify(response)
+        
+    except Exception as e:
+        return jsonify({
+            "error": f"Error processing request: {str(e)}",
+            "message": "Sorry, I encountered an error while getting inventory information."
+        }), 500
+
 # Authentication routes
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
