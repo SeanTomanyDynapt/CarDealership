@@ -2,8 +2,11 @@ services:
   - type: web
     name: car-dealership
     env: python
+    region: oregon
+    plan: free
+    pythonVersion: 3.11.10
     buildCommand: pip install -r requirements.txt
     startCommand: python app/main.py
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.0 
+        value: 3.11.10
