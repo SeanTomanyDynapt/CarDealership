@@ -1,10 +1,6 @@
-# Use pre-built wheels when available
---prefer-binary
---only-binary=pandas,numpy
-
 Flask==2.3.3
 Jinja2==3.1.2
 openpyxl==3.1.2
 watchdog==3.0.0
-numpy>=1.21.0,<2.0.0
-pandas==2.2.0
+numpy>=2.0.0
+pandas>=2.2.0
