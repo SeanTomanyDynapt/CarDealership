@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Part - Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .btn-primary { background-color: #0066cc; border-color: #0066cc; }
+        .btn-primary:hover { background-color: #0052a3; border-color: #0052a3; }
+        .form-container { max-width: 600px; margin: 0 auto; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('admin_dashboard') }}">
+                <i class="fas fa-car me-2"></i>Admin Panel
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
+                    <i class="fas fa-home me-1"></i>Dashboard
+                </a>
+                <a class="nav-link" href="{{ url_for('admin_parts') }}">
+                    <i class="fas fa-cogs me-1"></i>Manage Parts
+                </a>
+                <a class="nav-link" href="{{ url_for('home') }}" target="_blank">
+                    <i class="fas fa-external-link-alt me-1"></i>View Website
+                </a>
+                <a class="nav-link" href="{{ url_for('admin_logout') }}">
+                    <i class="fas fa-sign-out-alt me-1"></i>Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="form-container">
+            <div class="row mb-4">
+                <div class="col">
+                    <h1><i class="fas fa-plus me-2"></i>Add New Part</h1>
+                    <p class="lead">Add a new part to your inventory</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <form id="addPartForm">
+                        <div class="mb-3">
+                            <label for="make" class="form-label">Make <span class="text-danger">*</span></label>
+                            <select class="form-select" id="make" name="make" required onchange="updateModels()">
+                                <option value="">Select Make</option>
+                                {% for make in inventory.keys() %}
+                                    <option value="{{ make }}">{{ make }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="model" class="form-label">Model <span class="text-danger">*</span></label>
+                            <select class="form-select" id="model" name="model" required>
+                                <option value="">Select Model</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category <span class="text-danger">*</span></label>
+                            <select class="form-select" id="category" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="Engine">Engine</option>
+                                <option value="Transmission">Transmission</option>
+                                <option value="Brakes">Brakes</option>
+                                <option value="Suspension">Suspension</option>
+                                <option value="Electrical">Electrical</option>
+                                <option value="Body">Body</option>
+                                <option value="Interior">Interior</option>
+                                <option value="Exterior">Exterior</option>
+                                <option value="Filters">Filters</option>
+                                <option value="Fluids">Fluids</option>
+                                <option value="Accessories">Accessories</option>
+                                <option value="Tools">Tools</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="part" class="form-label">Part Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="part" name="part" required>
+                            <div class="form-text">Enter the specific part name (e.g., "Air Filter", "Brake Pads", "Spark Plugs")</div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('admin_parts') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Add Part
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script id="inventory-data" type="application/json">{{ inventory | tojson | safe }}</script>
+    <script>
+        // Store inventory data for dynamic model updates
+        const inventory = JSON.parse(document.getElementById('inventory-data').textContent);
+
+        function updateModels() {
+            const makeSelect = document.getElementById('make');
+            const modelSelect = document.getElementById('model');
+            const selectedMake = makeSelect.value;
+
+            // Clear existing options
+            modelSelect.innerHTML = '<option value="">Select Model</option>';
+
+            if (selectedMake && inventory[selectedMake]) {
+                Object.keys(inventory[selectedMake]).forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model;
+                    option.textContent = model;
+                    modelSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Form submission
+        document.getElementById('addPartForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const response = await fetch('{{ url_for("admin_add_part") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Part added successfully!');
+                    window.location.href = '{{ url_for("admin_parts") }}';
+                } else {
+                    alert('Error adding part: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error adding part. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html> 

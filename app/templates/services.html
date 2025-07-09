@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Services & Parts - Premium Auto Dealership{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Services & Parts</h1>
+    <a href="{{ url_for('home') }}" class="btn btn-secondary">Back to Home</a>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h3 class="card-title text-primary">Service Center</h3>
+                <p class="card-text">Professional maintenance and repair services for all Ford, Lincoln, and Jeep vehicles.</p>
+                <p><strong>Hours:</strong><br>
+                Mon-Fri: 7:00 AM - 6:00 PM<br>
+                Saturday: 8:00 AM - 4:00 PM<br>
+                Sunday: Closed</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h3 class="card-title text-primary">Parts Department</h3>
+                <p class="card-text">Genuine OEM parts and accessories for optimal performance and reliability.</p>
+                <p><strong>Hours:</strong><br>
+                Mon-Fri: 8:00 AM - 6:00 PM<br>
+                Saturday: 9:00 AM - 3:00 PM<br>
+                Sunday: Closed</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h3 class="card-title text-primary">Quick Service</h3>
+                <p class="card-text">Express service for oil changes, tire rotations, and basic maintenance.</p>
+                <p><strong>No Appointment Needed!</strong><br>
+                Mon-Fri: 8:00 AM - 5:00 PM<br>
+                Saturday: 9:00 AM - 2:00 PM<br>
+                Sunday: Closed</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if parts.Services %}
+<div class="mb-5">
+    <h2>Our Services</h2>
+    <div class="row">
+        {% for service_type, service_list in parts.Services.items() %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ service_type }}</h5>
+                    <ul class="list-group list-group-flush">
+                        {% for service in service_list %}
+                        <li class="list-group-item">{{ service }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<div class="mb-5">
+    <h2>Parts Catalog by Brand</h2>
+    <div class="row">
+        {% for brand, models in parts.items() %}
+        {% if brand != 'Services' %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ brand }} Parts</h5>
+                    {% for model, categories in models.items() %}
+                    <div class="mb-3">
+                        <h6 class="text-primary">{{ model }}</h6>
+                        {% for category, parts_list in categories.items() %}
+                        <div class="mb-2">
+                            <strong>{{ category }}:</strong>
+                            <ul class="list-unstyled ms-3">
+                                {% for part in parts_list %}
+                                <li>• {{ part }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+<div class="p-4 bg-primary text-white rounded">
+    <h3>Schedule Service or Order Parts</h3>
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Service Appointments</h5>
+            <p>Call (555) 123-4568 or email service@premiumauto.com</p>
+            <button class="btn btn-light">Schedule Online</button>
+        </div>
+        <div class="col-md-6">
+            <h5>Parts Orders</h5>
+            <p>Call (555) 123-4569 or email parts@premiumauto.com</p>
+            <button class="btn btn-light">Order Parts</button>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4 p-4 bg-light rounded">
+    <h4>Why Choose Our Service Center?</h4>
+    <div class="row">
+        <div class="col-md-3 text-center">
+            <h5>Certified Technicians</h5>
+            <p>Factory-trained experts</p>
+        </div>
+        <div class="col-md-3 text-center">
+            <h5>Genuine Parts</h5>
+            <p>OEM quality guaranteed</p>
+        </div>
+        <div class="col-md-3 text-center">
+            <h5>Modern Equipment</h5>
+            <p>State-of-the-art tools</p>
+        </div>
+        <div class="col-md-3 text-center">
+            <h5>Warranty Protection</h5>
+            <p>Service guarantee</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

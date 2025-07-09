@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Premium Auto Dealership{% endblock %}
+
+{% block content %}
+<div class="hero-section bg-primary text-white text-center py-5 mb-5 rounded">
+    <h1 class="display-4">Welcome to Premium Auto Dealership</h1>
+    <p class="lead">Your trusted source for Ford, Lincoln, and Jeep vehicles since 1990</p>
+    <a href="#inventory" class="btn btn-light btn-lg">View Our Inventory</a>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h3 class="card-title text-primary">Business Hours</h3>
+                <div class="card-text">
+                    <p><strong>Monday - Friday:</strong> 8:00 AM - 7:00 PM</p>
+                    <p><strong>Saturday:</strong> 9:00 AM - 6:00 PM</p>
+                    <p><strong>Sunday:</strong> 12:00 PM - 5:00 PM</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h3 class="card-title text-primary">Contact Us</h3>
+                <div class="card-text">
+                    <p><strong>Phone:</strong> (555) 123-4567</p>
+                    <p><strong>Email:</strong> info@premiumauto.com</p>
+                    <p><strong>Address:</strong> 123 Auto Lane<br>Car City, CC 12345</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <h3 class="card-title text-primary">Our Services</h3>
+                <div class="card-text">
+                    <p>• New & Used Vehicle Sales</p>
+                    <p>• Professional Service Center</p>
+                    <p>• Genuine Parts & Accessories</p>
+                    <p>• Financing Options Available</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section id="inventory" class="mb-5">
+    <h2 class="text-center mb-4">Our Vehicle Brands</h2>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <h3 class="card-title">Ford</h3>
+                    <p class="card-text">Discover the latest Ford trucks, SUVs, and cars. Built tough and reliable for every adventure.</p>
+                    <a href="{{ url_for('ford') }}" class="btn btn-primary">View Ford Models</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <h3 class="card-title">Lincoln</h3>
+                    <p class="card-text">Experience luxury and comfort with Lincoln's premium vehicles and sophisticated design.</p>
+                    <a href="{{ url_for('lincoln') }}" class="btn btn-primary">View Lincoln Models</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <h3 class="card-title">Jeep</h3>
+                    <p class="card-text">Go anywhere, do anything with Jeep's legendary 4x4 capability and rugged performance.</p>
+                    <a href="{{ url_for('jeep') }}" class="btn btn-primary">View Jeep Models</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-light p-4 rounded">
+    <h2 class="text-center mb-4">Why Choose Premium Auto?</h2>
+    <div class="row">
+        <div class="col-md-3 text-center">
+            <h4>35+ Years Experience</h4>
+            <p>Serving customers since 1990</p>
+        </div>
+        <div class="col-md-3 text-center">
+            <h4>Certified Technicians</h4>
+            <p>Factory-trained service experts</p>
+        </div>
+        <div class="col-md-3 text-center">
+            <h4>Genuine Parts</h4>
+            <p>OEM parts and accessories</p>
+        </div>
+        <div class="col-md-3 text-center">
+            <h4>Customer Satisfaction</h4>
+            <p>Your happiness is our priority</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

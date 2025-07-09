@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}{{ make }} Models - Premium Auto Dealership{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>{{ make }} Models</h1>
+    <a href="{{ url_for('home') }}" class="btn btn-secondary">Back to Home</a>
+</div>
+
+<div class="row">
+    {% for model_name, model_data in models.items() %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ make }} {{ model_name }}</h5>
+                <p class="card-text">{{ model_data.description }}</p>
+                <p class="text-muted">Category: {{ model_data.category }}</p>
+                
+                <div class="mb-3">
+                    <h6>Key Features:</h6>
+                    <ul class="list-unstyled">
+                        {% for feature in model_data.features %}
+                        <li>• {{ feature }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="mb-3">
+                    <h6>Available Years:</h6>
+                    <p class="text-muted">
+                        {{ model_data.years[0] }} - {{ model_data.years[-1] }}
+                        ({{ model_data.years|length }} model years)
+                    </p>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('model_detail', make=make, model_name=model_name) }}" 
+                       class="btn btn-primary">View Details</a>
+                    <button class="btn btn-outline-secondary">Request Quote</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if not models %}
+<div class="text-center mt-5">
+    <h3>No models available for {{ make }}</h3>
+    <p class="text-muted">Please check back later or contact us for more information.</p>
+</div>
+{% endif %}
+
+<div class="mt-5 p-4 bg-light rounded">
+    <h3>Interested in {{ make }} vehicles?</h3>
+    <p>Contact our {{ make }} specialists today to learn more about our current inventory, 
+       financing options, and special offers.</p>
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Phone:</strong> (555) 123-4567</p>
+            <p><strong>Email:</strong> {{ make.lower() }}@premiumauto.com</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Visit Us:</strong> 123 Auto Lane, Car City, CC 12345</p>
+            <p><strong>Hours:</strong> Mon-Fri 8AM-7PM, Sat 9AM-6PM, Sun 12PM-5PM</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ make }} Vehicles - Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .btn-primary { background-color: #0066cc; border-color: #0066cc; }
+        .btn-primary:hover { background-color: #0052a3; border-color: #0052a3; }
+        .table-responsive { border-radius: 0.5rem; overflow: hidden; }
+        .badge-years { background-color: #e9ecef; color: #495057; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('admin_dashboard') }}">
+                <i class="fas fa-car me-2"></i>Admin Panel
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
+                    <i class="fas fa-home me-1"></i>Dashboard
+                </a>
+                <a class="nav-link" href="{{ url_for('admin_vehicles') }}">
+                    <i class="fas fa-list me-1"></i>All Vehicles
+                </a>
+                <a class="nav-link" href="{{ url_for('home') }}" target="_blank">
+                    <i class="fas fa-external-link-alt me-1"></i>View Website
+                </a>
+                <a class="nav-link" href="{{ url_for('admin_logout') }}">
+                    <i class="fas fa-sign-out-alt me-1"></i>Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="row mb-4">
+            <div class="col">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url_for('admin_vehicles') }}">Vehicles</a></li>
+                        <li class="breadcrumb-item active">{{ make }}</li>
+                    </ol>
+                </nav>
+                <h1><i class="fas fa-car me-2"></i>{{ make }} Vehicles</h1>
+                <p class="lead">Manage {{ make }} vehicle inventory</p>
+            </div>
+            <div class="col-auto">
+                <a href="{{ url_for('admin_add_vehicle') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Add New Vehicle
+                </a>
+            </div>
+        </div>
+
+        {% if vehicles %}
+            <!-- Vehicles Table -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="vehiclesTable" class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Category</th>
+                                    <th>Years Available</th>
+                                    <th>Total Years</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for model, data in vehicles.items() %}
+                                <tr>
+                                    <td><strong>{{ model }}</strong></td>
+                                    <td>
+                                        {% if data.category %}
+                                            <span class="badge bg-info">{{ data.category }}</span>
+                                        {% else %}
+                                            <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if data.years %}
+                                            {% set sorted_years = data.years|sort %}
+                                            {% set start_year = sorted_years[0] %}
+                                            {% set end_year = sorted_years[-1] %}
+                                            
+                                            {% if start_year == end_year %}
+                                                <span class="badge badge-years">{{ start_year }}</span>
+                                            {% else %}
+                                                <span class="badge badge-years">{{ start_year }} - {{ end_year }}</span>
+                                            {% endif %}
+                                        {% else %}
+                                            <span class="text-muted">No years</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary">{{ data.years|length }} years</span>
+                                    </td>
+                                    <td>
+                                        {% if data.status == 'Available' %}
+                                            <span class="badge bg-success">{{ data.status }}</span>
+                                        {% else %}
+                                            <span class="badge bg-warning">{{ data.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a href="{{ url_for('admin_edit_vehicle', make=make, model=model) }}" 
+                                               class="btn btn-outline-primary" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a href="{{ url_for('model_detail', make=make, model_name=model) }}" 
+                                               class="btn btn-outline-info" title="View on Website" target="_blank">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ url_for('admin_delete_vehicle', make=make, model=model) }}" 
+                                               class="btn btn-outline-danger" title="Delete"
+                                               onclick="return confirm('Are you sure you want to delete {{ make }} {{ model }}?')">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Card -->
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ make }} Summary</h5>
+                            <h3 class="text-primary">{{ vehicles|length }}</h3>
+                            <p class="card-text">Models Available</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-car fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">No {{ make }} Vehicles Found</h4>
+                    <p class="text-muted">Start by adding {{ make }} vehicles to your inventory.</p>
+                    <a href="{{ url_for('admin_add_vehicle') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Add First {{ make }} Vehicle
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            $('#vehiclesTable').DataTable({
+                "pageLength": 25,
+                "order": [[ 0, "asc" ]],
+                "columnDefs": [
+                    { "orderable": false, "targets": 5 }
+                ]
+            });
+        });
+    </script>
+</body>
+</html> 

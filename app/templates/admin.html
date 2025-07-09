@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Premium Auto Dealership{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1>Admin Dashboard</h1>
+        <p class="text-muted">Manage your inventory and Excel integration</p>
+    </div>
+</div>
+
+<!-- Flash messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title text-primary">Total Makes</h5>
+                <h3 id="total-makes">-</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title text-primary">Total Models</h5>
+                <h3 id="total-models">-</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title text-primary">Total Parts</h5>
+                <h3 id="total-parts">-</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title text-primary">Excel Status</h5>
+                <h3 id="excel-status">
+                    {% if excel_exists %}
+                        <span class="text-success">✓ Available</span>
+                    {% else %}
+                        <span class="text-warning">⚠ Not Found</span>
+                    {% endif %}
+                </h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Actions -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Excel Management</h5>
+            </div>
+            <div class="card-body">
+                <p>Export your current inventory to Excel for easy editing, or import changes from Excel back to your website.</p>
+                
+                <div class="d-grid gap-2">
+                    <form method="POST" action="{{ url_for('admin_export_excel') }}" class="d-inline">
+                        <button type="submit" class="btn btn-primary w-100">
+                            📊 Export to Excel
+                        </button>
+                    </form>
+                    
+                    {% if excel_exists %}
+                    <form method="POST" action="{{ url_for('admin_import_excel') }}" class="d-inline">
+                        <button type="submit" class="btn btn-success w-100">
+                            📥 Import from Excel
+                        </button>
+                    </form>
+                    
+                    <a href="{{ url_for('admin_download_excel') }}" class="btn btn-info w-100">
+                        📥 Download Excel File
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Data Management</h5>
+            </div>
+            <div class="card-body">
+                <p>Refresh your website data or view detailed statistics about your inventory.</p>
+                
+                <div class="d-grid gap-2">
+                    <form method="POST" action="{{ url_for('admin_reload_data') }}" class="d-inline">
+                        <button type="submit" class="btn btn-warning w-100">
+                            🔄 Reload Data
+                        </button>
+                    </form>
+                    
+                    <button type="button" class="btn btn-info w-100" onclick="loadStats()">
+                        📊 Refresh Statistics
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Instructions Section -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>How to Use Excel Integration</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Step 1: Export to Excel</h6>
+                        <ol>
+                            <li>Click "Export to Excel" to create an Excel file with all your inventory</li>
+                            <li>Download the Excel file to your computer</li>
+                            <li>Open it in Excel, Google Sheets, or any spreadsheet software</li>
+                        </ol>
+                        
+                        <h6>Step 2: Edit Your Inventory</h6>
+                        <ol>
+                            <li><strong>Inventory Sheet:</strong> Add/edit vehicles, descriptions, features</li>
+                            <li><strong>Parts Sheets:</strong> Manage parts for each make (Ford_Parts, Lincoln_Parts, etc.)</li>
+                            <li><strong>Services Sheet:</strong> Update service offerings</li>
+                        </ol>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6>Step 3: Update Website</h6>
+                        <ol>
+                            <li>Save your Excel file as "inventory.xlsx"</li>
+                            <li>Place it in your project folder</li>
+                            <li>Click "Import from Excel" to update your website</li>
+                        </ol>
+                        
+                        <h6>Automatic Updates</h6>
+                        <p>Run this command to automatically update your website when you save the Excel file:</p>
+                        <code>python inventory_manager.py --monitor</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Command Line Tools -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Command Line Tools</h5>
+            </div>
+            <div class="card-body">
+                <p>You can also use these commands in your terminal:</p>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6>Export to Excel</h6>
+                        <code>python inventory_manager.py --export</code>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Import from Excel</h6>
+                        <code>python inventory_manager.py --import</code>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Auto-Monitor</h6>
+                        <code>python inventory_manager.py --monitor</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function loadStats() {
+    fetch('/admin/stats')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('total-makes').textContent = data.total_makes;
+            document.getElementById('total-models').textContent = data.total_models;
+            document.getElementById('total-parts').textContent = data.total_parts;
+            
+            const excelStatus = document.getElementById('excel-status');
+            if (data.excel_exists) {
+                excelStatus.innerHTML = '<span class="text-success">✓ Available</span>';
+            } else {
+                excelStatus.innerHTML = '<span class="text-warning">⚠ Not Found</span>';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading stats:', error);
+        });
+}
+
+// Load stats on page load
+document.addEventListener('DOMContentLoaded', loadStats);
+</script>
+{% endblock %} 

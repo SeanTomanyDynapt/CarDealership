@@ -1,0 +1,282 @@
+{
+  "Ford": {
+    "F-150": {
+      "Engine": [
+        "Air Filter",
+        "Oil Filter",
+        "Spark Plugs",
+        "Fuel Filter"
+      ],
+      "Transmission": [
+        "Transmission Fluid",
+        "Transmission Filter",
+        "Clutch Kit"
+      ],
+      "Brakes": [
+        "Brake Pads",
+        "Brake Rotors",
+        "Brake Fluid",
+        "Brake Lines"
+      ],
+      "Suspension": [
+        "Shock Absorbers",
+        "Struts",
+        "Springs",
+        "Ball Joints"
+      ],
+      "Electrical": [
+        "Battery",
+        "Alternator",
+        "Starter",
+        "Ignition Coils"
+      ]
+    },
+    "Mustang": {
+      "Engine": [
+        "Performance Air Filter",
+        "High-Flow Oil Filter",
+        "Performance Spark Plugs",
+        "Cold Air Intake"
+      ],
+      "Transmission": [
+        "Performance Transmission Fluid",
+        "Short-throw Shifter",
+        "Performance Clutch"
+      ],
+      "Brakes": [
+        "Performance Brake Pads",
+        "Slotted Rotors",
+        "Racing Brake Fluid",
+        "Steel Brake Lines"
+      ],
+      "Suspension": [
+        "Performance Shocks",
+        "Lowering Springs",
+        "Sway Bars",
+        "Performance Bushings"
+      ],
+      "Electrical": [
+        "High-Output Battery",
+        "High-Amp Alternator",
+        "Performance Starter",
+        "Premium Ignition System"
+      ]
+    },
+    "Explorer": {
+      "Engine": [
+        "Air Filter",
+        "Oil Filter",
+        "Spark Plugs",
+        "PCV Valve"
+      ],
+      "Transmission": [
+        "ATF Fluid",
+        "Transmission Filter",
+        "CV Joints"
+      ],
+      "Brakes": [
+        "Ceramic Brake Pads",
+        "Vented Rotors",
+        "DOT 3 Brake Fluid",
+        "Brake Hoses"
+      ],
+      "Suspension": [
+        "MacPherson Struts",
+        "Coil Springs",
+        "Stabilizer Links",
+        "Control Arms"
+      ],
+      "Electrical": [
+        "AGM Battery",
+        "Alternator",
+        "Starter Motor",
+        "Ignition Coils"
+      ]
+    }
+  },
+  "Lincoln": {
+    "Navigator": {
+      "Engine": [
+        "Premium Air Filter",
+        "Synthetic Oil Filter",
+        "Platinum Spark Plugs",
+        "Fuel Injector Cleaner"
+      ],
+      "Transmission": [
+        "Premium ATF",
+        "Transmission Cooler",
+        "CV Joints"
+      ],
+      "Brakes": [
+        "Premium Brake Pads",
+        "Vented Rotors",
+        "DOT 4 Brake Fluid",
+        "Stainless Steel Lines"
+      ],
+      "Suspension": [
+        "Air Suspension Struts",
+        "Electronic Shocks",
+        "Premium Springs",
+        "Luxury Bushings"
+      ],
+      "Electrical": [
+        "Premium Battery",
+        "High-Output Alternator",
+        "Premium Starter",
+        "Luxury Ignition System"
+      ]
+    },
+    "Continental": {
+      "Engine": [
+        "Luxury Air Filter",
+        "Premium Oil Filter",
+        "Platinum Spark Plugs",
+        "Premium Fuel Filter"
+      ],
+      "Transmission": [
+        "Premium ATF",
+        "Luxury Transmission Filter",
+        "Premium CV Joints"
+      ],
+      "Brakes": [
+        "Luxury Brake Pads",
+        "Premium Rotors",
+        "Premium Brake Fluid",
+        "Luxury Brake Lines"
+      ],
+      "Suspension": [
+        "Adaptive Suspension",
+        "Premium Shocks",
+        "Luxury Springs",
+        "Premium Ball Joints"
+      ],
+      "Electrical": [
+        "Luxury Battery",
+        "Premium Alternator",
+        "Luxury Starter",
+        "Premium Ignition"
+      ]
+    }
+  },
+  "Jeep": {
+    "Wrangler": {
+      "Engine": [
+        "Heavy-Duty Air Filter",
+        "Off-Road Oil Filter",
+        "All-Weather Spark Plugs",
+        "Fuel System Cleaner"
+      ],
+      "Transmission": [
+        "Heavy-Duty ATF",
+        "Off-Road Transmission Cooler",
+        "Heavy-Duty CV Joints"
+      ],
+      "Brakes": [
+        "Off-Road Brake Pads",
+        "Slotted Rotors",
+        "DOT 4 Brake Fluid",
+        "Reinforced Brake Lines"
+      ],
+      "Suspension": [
+        "Heavy-Duty Shocks",
+        "Lift Kit Springs",
+        "Heavy-Duty Sway Bars",
+        "Off-Road Bushings"
+      ],
+      "Electrical": [
+        "Deep-Cycle Battery",
+        "Heavy-Duty Alternator",
+        "All-Weather Starter",
+        "Waterproof Ignition"
+      ]
+    },
+    "Cherokee": {
+      "Engine": [
+        "All-Terrain Air Filter",
+        "Multi-Grade Oil Filter",
+        "Long-Life Spark Plugs",
+        "Fuel System Treatment"
+      ],
+      "Transmission": [
+        "All-Weather ATF",
+        "Transmission Pan Gasket",
+        "Heavy-Duty CV Joints"
+      ],
+      "Brakes": [
+        "All-Terrain Brake Pads",
+        "Cross-Drilled Rotors",
+        "All-Weather Brake Fluid",
+        "Heavy-Duty Lines"
+      ],
+      "Suspension": [
+        "All-Terrain Shocks",
+        "Heavy-Duty Springs",
+        "Reinforced Sway Bars",
+        "Heavy-Duty Ball Joints"
+      ],
+      "Electrical": [
+        "All-Weather Battery",
+        "Heavy-Duty Alternator",
+        "All-Terrain Starter",
+        "Weather-Resistant Ignition"
+      ]
+    },
+    "Grand Cherokee": {
+      "Engine": [
+        "Premium Air Filter",
+        "Synthetic Oil Filter",
+        "Platinum Spark Plugs",
+        "Premium Fuel Treatment"
+      ],
+      "Transmission": [
+        "Premium ATF",
+        "Luxury Transmission Filter",
+        "Premium CV Joints"
+      ],
+      "Brakes": [
+        "Premium Brake Pads",
+        "Performance Rotors",
+        "Premium Brake Fluid",
+        "Stainless Steel Lines"
+      ],
+      "Suspension": [
+        "Adaptive Suspension",
+        "Premium Shocks",
+        "Variable Springs",
+        "Premium Ball Joints"
+      ],
+      "Electrical": [
+        "Premium Battery",
+        "High-Output Alternator",
+        "Premium Starter",
+        "Advanced Ignition System"
+      ]
+    }
+  },
+  "Services": {
+    "Maintenance": [
+      "Oil Change Service",
+      "Brake Inspection",
+      "Tire Rotation",
+      "Multi-Point Inspection",
+      "Transmission Service",
+      "Cooling System Service"
+    ],
+    "Repairs": [
+      "Engine Diagnostics",
+      "Transmission Repair",
+      "Brake System Repair",
+      "Suspension Repair",
+      "Electrical System Repair",
+      "Air Conditioning Service"
+    ],
+    "Specialty": [
+      "Performance Tuning",
+      "Off-Road Modifications",
+      "Luxury Upgrades",
+      "Custom Exhaust Systems",
+      "Paint Protection",
+      "Interior Detailing"
+    ]
+  }
+}

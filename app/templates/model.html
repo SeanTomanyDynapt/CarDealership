@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}{{ make }} {{ model_name }} - Premium Auto Dealership{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>{{ make }} {{ model_name }}</h1>
+    <a href="{{ url_for(make.lower()) }}" class="btn btn-secondary">Back to {{ make }} Models</a>
+</div>
+
+{% if model_data %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Vehicle Information</h5>
+                <p class="card-text">{{ model_data.description }}</p>
+                <p><strong>Category:</strong> {{ model_data.category }}</p>
+                <p><strong>Years Available:</strong> {{ model_data.years[0] }} - {{ model_data.years[-1] }}</p>
+                <p><strong>Total Model Years:</strong> {{ model_data.years|length }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Key Features</h5>
+                <ul class="list-group list-group-flush">
+                    {% for feature in model_data.features %}
+                    <li class="list-group-item">{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <h3>Available Model Years</h3>
+    <div class="row">
+        {% for year in model_data.years %}
+        <div class="col-md-2 col-sm-3 col-4 mb-2">
+            <div class="card text-center">
+                <div class="card-body py-2">
+                    <span class="fw-bold">{{ year }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="mt-5 p-4 bg-primary text-white rounded">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h3>Interested in the {{ make }} {{ model_name }}?</h3>
+            <p class="mb-0">Contact us today to schedule a test drive or get a personalized quote.</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <button class="btn btn-light btn-lg me-2">Schedule Test Drive</button>
+            <button class="btn btn-outline-light btn-lg">Get Quote</button>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4 p-4 bg-light rounded">
+    <h4>Contact Our {{ make }} Specialists</h4>
+    <div class="row">
+        <div class="col-md-4">
+            <p><strong>Sales Department</strong><br>
+            Phone: (555) 123-4567<br>
+            Email: sales@premiumauto.com</p>
+        </div>
+        <div class="col-md-4">
+            <p><strong>Service Department</strong><br>
+            Phone: (555) 123-4568<br>
+            Email: service@premiumauto.com</p>
+        </div>
+        <div class="col-md-4">
+            <p><strong>Parts Department</strong><br>
+            Phone: (555) 123-4569<br>
+            Email: parts@premiumauto.com</p>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="text-center mt-5">
+    <h3>Model Information Not Available</h3>
+    <p class="text-muted">Sorry, we don't have information about this model at the moment.</p>
+    <a href="{{ url_for(make.lower()) }}" class="btn btn-primary">View Other {{ make }} Models</a>
+</div>
+{% endif %}
+{% endblock %}
