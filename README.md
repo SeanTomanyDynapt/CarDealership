@@ -36,40 +36,46 @@ A comprehensive Flask-based car dealership management system with CRUD operation
    - Admin Panel: http://localhost:5001/admin/login (admin/password)
    - API: http://localhost:5001/api/inventory
 
-### Railway Deployment
+### Deployment Options
 
-This application is configured for easy deployment on Railway:
+This application is configured for multiple deployment platforms:
 
-1. **Fork or clone this repository**
+#### Option 1: Render.com (Recommended - Free Tier Available)
 
-2. **Deploy on Railway:**
-   - Go to [Railway.app](https://railway.app)
-   - Click "New Project"
-   - Select "Deploy from GitHub repo"
+1. **Go to [Render.com](https://render.com) and sign up**
+2. **Connect your GitHub account**
+3. **Create a new Web Service:**
    - Choose your repository: `SeanTomanyDynapt/CarDealership`
-   - Railway will automatically detect the configuration
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `python app/main.py`
+4. **Deploy automatically** - Render will detect the `render.yaml` configuration
 
-3. **Configuration files included:**
-   - `Procfile`: Tells Railway how to run the application
-   - `railway.json`: Railway-specific deployment settings
-   - `requirements.txt`: Python dependencies
+#### Option 2: Railway (Requires Paid Plan)
 
-4. **Environment variables:**
-   - Railway automatically provides `PORT` environment variable
-   - No additional configuration needed
+1. **Deploy on Railway:**
+   - Go to [Railway.app](https://railway.app)
+   - Upgrade to a paid plan ($5/month)
+   - Deploy from GitHub repo: `SeanTomanyDynapt/CarDealership`
 
-5. **Deployment process:**
-   - Railway will build and deploy automatically
-   - The application will be available at your Railway-provided URL
+#### Option 3: Heroku (Free with GitHub Student Pack)
 
-### Manual Railway Setup
+1. **Go to [Heroku.com](https://heroku.com)**
+2. **Create new app from GitHub:**
+   - Connect repository: `SeanTomanyDynapt/CarDealership`
+   - Heroku will use `Procfile` and `runtime.txt`
 
-If you prefer manual setup:
+#### Option 4: PythonAnywhere (Free Tier)
 
-1. Create a new Railway project
-2. Connect your GitHub repository
-3. Set the start command: `python app/main.py`
-4. Deploy!
+1. **Upload your code to [PythonAnywhere](https://pythonanywhere.com)**
+2. **Set up a web app** pointing to `app/main.py`
+
+### Configuration Files Included:
+
+- `Procfile`: Railway/Heroku deployment
+- `railway.json`: Railway-specific settings  
+- `render.yaml`: Render.com configuration
+- `runtime.txt`: Python version specification
+- `requirements.txt`: Dependencies
 
 ## Application Structure
 
